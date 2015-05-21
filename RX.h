@@ -769,7 +769,6 @@ uint32_t rxStatsMs = 0;
 void loop()
 {
   uint32_t timeUs, timeMs;
-
   watchdogReset();
 
   if (spiReadRegister(0x0C) == 0) {     // detect the locked module and reboot
@@ -796,6 +795,7 @@ retry:
       for (int16_t i = 0; i < getPacketSize(&bind_data); i++) {
         rx_buf[i] = spiReadData();
       }
+      Serial.println("got pkt!");
 
       lastAFCCvalue = rfmGetAFCC();
       Green_LED_ON;

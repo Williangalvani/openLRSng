@@ -692,7 +692,13 @@ void loop(void)
     init_rfm(0);
     rx_reset();
     Red_LED_OFF;
+   if (spiReadRegister(0x0C) != 0)
+     {
+      Serial.println("module unlocked!");
+     } 
+  
   }
+    
 
   while (TelemetrySerial.available()) {
     uint8_t ch = TelemetrySerial.read();
@@ -779,8 +785,11 @@ void loop(void)
       ppmAge++;
 
       if (lastTelemetry) {
+//        TelemetrySerial.println((time - lastTelemetry));
         if ((time - lastTelemetry) > getInterval(&bind_data)) {
           // telemetry lost
+          Red_LED_ON;
+  //        TelemetrySerial.println("lost!");
           if (!(tx_config.flags & MUTE_TX)) {
             buzzerOn(BZ_FREQ);
           }
@@ -788,6 +797,7 @@ void loop(void)
         } else {
           // telemetry link re-established
           buzzerOff();
+          Red_LED_OFF;
         }
       }
 
@@ -823,7 +833,7 @@ void loop(void)
           Red_LED_ON
         } else {
           tx_buf[0] |= 0x00; // servo positions
-          Red_LED_OFF
+          //Red_LED_OFF
           if (serial_okToSend == 0) {
             serial_okToSend = 1;
           }

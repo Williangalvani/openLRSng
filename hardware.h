@@ -660,8 +660,14 @@ void setupRfmInterrupt()
 #warning Possibly wrong board selected, select Arduino Pro/Pro Mini 5V/16MHz w/ ATMega328
 #endif
 
+
+
+
 #if (COMPILE_TX == 1)
 // TX operation
+
+#define SWAP_GPIOS
+
 
 #define TelemetrySerial Serial
 
@@ -743,7 +749,7 @@ const pinMask_t OUTPUT_MASKS[OUTPUTS] = {
 #define RXD_OUTPUT 6
 #define TXD_OUTPUT 7
 
-const uint8_t OUTPUT_PIN[OUTPUTS] = { 9, A4, 3, A5, A0, A1, 0, 1};
+const uint8_t OUTPUT_PIN[OUTPUTS] = { 9, A4, 3, A5, A0, A1, 0, 1};  
 
 struct rxSpecialPinMap rxSpecialPins[] = {
   { 0, PINMAP_PPM},
@@ -777,6 +783,7 @@ void rxInitHWConfig()
 
 #define Red_LED 6
 #define Green_LED 5
+
 
 #if (COMPILE_TX != 1)
 #define Red_LED_ON    PORTD |=  _BV(6);
@@ -830,6 +837,9 @@ void setupRfmInterrupt()
 {
   attachInterrupt(IRQ_interrupt, RFM22B_Int, FALLING);
 }
+
+
+
 
 #endif
 
